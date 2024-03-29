@@ -16,5 +16,7 @@ resource "aws_ecs_cluster" "dareyio_cluster" {
 
 resource "aws_cloudwatch_log_group" "frontend_landing_page-apps" {
   name = "frontend-landing-page-log-group"
-
+  tags = {
+    Environment = var.tag
+  }
 }
