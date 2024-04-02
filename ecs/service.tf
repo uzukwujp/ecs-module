@@ -120,6 +120,36 @@ resource "aws_lb_listener" "revamp_https_frontend_landing" {
   }
 }
 
+resource "aws_lb_listener_rule" "redirect_to_blog_dareyio" {
+  listener_arn = aws_lb_listener.revamp_https_frontend_landing.arn
+
+  priority = 3
+
+  action {
+    type = "redirect"
+    
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+      path        =  "/blog/mastering-remote-work-with-cloud-and-devops/blog/mastering-remote-work-with-cloud-and-devops"
+      host        = "#{host}"
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["blog.darey.io"]
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/blog/mastering-remote-work-with-cloud-and-devops-skills"]
+    }
+  }
+}
+
 
 resource "aws_ecs_service" "revamp_frontend_landing" {
   name            = var.revamp-ecs-service-name
