@@ -29,6 +29,12 @@ module "worker_node" {
   
 }
 
+module "eks_addons" {
+  source = "./eks/eks_addons"
+  cluster_name = module.eks.cluster_name
+  addon_name = "aws-ebs-csi-driver"
+}
+
 # module "ecs" {
 
 #     source = "./ecs"

@@ -5,6 +5,9 @@ resource "aws_eks_node_group" "example" {
   node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.example.arn
   subnet_ids      = [var.private_subnet_1_id, var.private_subnet_2_id]
+  labels = {
+     Environment: "staging"
+  }
 
   scaling_config {
     desired_size = var.desired_size
@@ -21,7 +24,9 @@ resource "aws_eks_node_group" "example" {
   depends_on = [
     aws_iam_role_policy_attachment.example-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.example-AmazonEKS_CNI_Policy,
-    aws_iam_role_policy_attachment.example-AmazonEC2ContainerRegistryReadOnly,
+    aws_iam_role_policy_attachment.example-AmazonEC2ContainerRegistryFullAccess,
+    aws_iam_role_policy_attachment.example-AmazonRoute53FullAccess,
+    aws_iam_role_policy_attachment.example-AmazonEBSCSIDriverPolicy
   ]
 }
 
@@ -50,7 +55,17 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEKS_CNI_Policy" {
   role       = aws_iam_role.example.name
 }
 
-resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryReadOnly" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryFullAccess" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+  role       = aws_iam_role.example.name
+}
+
+resource "aws_iam_role_policy_attachment" "example-AmazonRoute53FullAccess" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+  role       = aws_iam_role.example.name
+}
+
+resource "aws_iam_role_policy_attachment" "example-AmazonEBSCSIDriverPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
   role       = aws_iam_role.example.name
 }
