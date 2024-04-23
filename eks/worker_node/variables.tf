@@ -35,3 +35,13 @@ variable "cluster_name" {
 variable "worker_node_iam_role_name" {
   type = string 
 }
+
+variable "instance_types" {
+  type = list(string)
+  default = ["t3.medium"] 
+}
+
+variable "capacity_type" {
+  type = string
+  default = "ON_DEMAND" 
+}

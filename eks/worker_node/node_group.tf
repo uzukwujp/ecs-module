@@ -8,6 +8,8 @@ resource "aws_eks_node_group" "example" {
   labels = {
      Environment: "staging"
   }
+  instance_types = var.instance_types
+  capacity_type = var.capacity_type
 
   scaling_config {
     desired_size = var.desired_size

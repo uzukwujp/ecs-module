@@ -21,6 +21,8 @@ module "worker_node" {
   node_group_name = "poc-worker-nodes"
   private_subnet_1_id = module.vpc.private_subnet_1_id
   private_subnet_2_id = module.vpc.private_subnet_2_id
+  instance_types = ["t3.medium"]
+  capacity_type = "ON_DEMAND"
   desired_size = 3
   max_size = 4
   max_unavailable = 1
